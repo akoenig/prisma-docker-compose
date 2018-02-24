@@ -42,6 +42,7 @@ If you don't like the environment variables defined in your `docker-compose.yml`
 ```
 environments:
   - MYSQL_ROOT_PASSWORD: foo
+  ...
 ```
 
 ... you define
@@ -50,10 +51,11 @@ environments:
 env_file: path/to/your/.env
 ```
 
-... in your `docker-compose.yml` and place the variable in `.env` as:
+... in your `docker-compose.yml` and place the variables in `.env` as:
 
 ```
 MYSQL_ROOT_PASSWORD=foo
+...
 ```
 
 ## License
