@@ -35,26 +35,27 @@ prisma      | Version is up to date.
 
 The cluster comes with a [GraphQL Playground](https://github.com/graphcool/graphql-playground) at http://localhost:4466/cluster – Here you can obtain cluster information like the deployed projects, etc.
 
-## Note about `.env` files
+## Using `.env` files
 
-If you don't like the environment variables defined in your `docker-compose.yml`, you can easily move them to an `.env` file, which you can reference within your `docker-compose.yml` via `env_file` then. So instead of:
+If you don't like the environment variables defined in your `docker-compose.yml`, you can easily move them to an `.env` file, which you can reference within your `docker-compose.yml` via `env_file` then. So instead of ...
 
 ```
 environments:
   - MYSQL_ROOT_PASSWORD: foo
 ```
 
-you define
+... you define
 
 ```
 env_file: path/to/your/.env
 ```
 
-and place the variable in `.env` as:
+... in your `docker-compose.yml` and place the variable in `.env` as:
 
 ```
 MYSQL_ROOT_PASSWORD=foo
 ```
+
 ## License
 
 MIT © [André König](https://andrekoenig.de)
