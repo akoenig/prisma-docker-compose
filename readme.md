@@ -33,30 +33,43 @@ prisma      | Server running on :4466
 prisma      | Version is up to date.
 ```
 
-The cluster comes with a [GraphQL Playground](https://github.com/graphcool/graphql-playground) at http://localhost:4466/cluster – Here you can obtain cluster information like the deployed projects, etc.
+The cluster comes with a [GraphQL Playground](https://github.com/graphcool/graphql-playground) at http://localhost:4466/cluster – Here you can obtain cluster information like the deployed projects, etc. For example:
 
-## Using `.env` files
-
-If you don't like the environment variables defined in your `docker-compose.yml`, you can easily move them to an `.env` file, which you can reference within your `docker-compose.yml` via `env_file` then. So instead of ...
-
-```
-environments:
-  - MYSQL_ROOT_PASSWORD: foo
-  ...
+```graphql
+{
+  listProjects {
+    name
+  }
+}
 ```
 
-... you define
+## Configuration
+
+You can find two separate `env` files in this repository: `.mysql.env` and `.prisma.env`. Each of them is attached to the respective container via `env_file` in the `docker-compose.yml`.
+
+## Connecting to the cluster via `Prisma CLI`
+
+The central place for configuring your Prisma CLI is the file `~/.prisma/config.yml`. You can add your new cluster to this file by executing `prisma cluster add`:
 
 ```
-env_file: path/to/your/.env
+❯ prisma cluster add
+? Please provide the cluster endpoint http://localhost:4466
+? Please provide the cluster secret
+? Please provide a name for your cluster myprismacluster
 ```
 
-... in your `docker-compose.yml` and place the variables in `.env` as:
+**Important:** Leave `cluster secret` empty. This is because we haven't configured the `CLUSTER_PUBLIC_KEY` in `.prisma.env`. Please note that this is only for development purposes. You have to generate a key pair for securing your cluster if you want to create a production environment. You can find more information about how to secure your cluster in the [docs](<https://www.prismagraphql.com/docs/tutorials/cluster-deployment/digital-ocean-(docker-machine)-texoo9aemu#7.-enable-cluster-authentication>). Your `cluster secret` would then the generated `private` key, whereas the public key has to be placed as `CLUSTER_PUBLIC_KEY` in `.prisma.env`.
+
+If you used one of the boilerplates, like [typescript-graphql-server](https://github.com/graphql-boilerplates/typescript-graphql-server), you have to configure the `.env` file in there as follows:
 
 ```
-MYSQL_ROOT_PASSWORD=foo
+...
+PRISMA_ENDPOINT="http://localhost:4466/<your-project-name>/dev"
+PRISMA_CLUSTER="myprismacluster"
 ...
 ```
+
+Afterwards, you can deploy the schema via `prisma deploy`.
 
 ## License
 
